@@ -1,0 +1,24 @@
+<!-- index.html -->
+{%  extends "base.html" %}
+
+{% block title %}Marty's Stationery{%  endblock %}
+
+{%  block content %}
+    {% if user.is_authenticated %}
+        <p style="color:rgb(65, 58, 58);text-align:center;font-weight:bold;font-size:300%;">Hello {{ user.username }}</p>
+    {% endif %}
+    <p>This simple shop sells school stationery, sweet!</p>
+    <p>This is a test to see what the CSS and Javascript looks like, thank you for viewing my page! :)</p>
+    <ul>
+        {% for p in products %}
+            <li>{{ p.name }} - €{{ p.price }} - {{ p.description }}</li>
+
+            <a href="/products/{{p.id}}">
+                <img src="{{p.image.url}}" width="30%" />
+            </a>
+            <p><a href="/products/{{p.id}}" style="background-color: #FDFD96; color: black; border-color: black;" class="btn btn-primary">View</a></p>
+
+        {% endfor %}
+    </ul>
+    {{names}}
+{% endblock %}

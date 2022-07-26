@@ -1,0 +1,39 @@
+{%  extends "base.html" %}
+
+{% block title %}Marty's Stationery{%  endblock %}
+
+{%  block content %}
+
+{% if empty %}
+    <p>Your shopping basket is empty</p>
+    <pre>
+                                   ,
+            ,-.       _,---._ __  / \
+           /  )    .-'       `./ /   \
+          (  (   ,'            `/    /|
+           \  `-"             \'\   / |
+            `.              ,  \ \ /  |
+             /`.          ,'-`----Y   |
+            (            ;        |   '
+            |  ,-.    ,-'         |  /
+            |  | (   |   {EMPTY}  | /
+            )  |  \  `.___________|/
+`--'   `--'</pre>
+{% else %}
+    <table>
+        <body>
+            {% for item in sbi %}
+            <tr>
+                <td>{{item.product_id.name}} - {{item.product_id.description}}</td>
+                <td><img src="{{item.product_id.image.url}}" width="30%" /> </td>
+                <td>Quantity: {{item.quantity}}</td>
+                <td>Price: {{item.price}}</td>
+                <td><a href="/removeitem/{{item.id}}" style="background-color: #FAA0A0; color: black; border-color: black;" class="btn btn-primary">Remove</a></td>
+            {% endfor %}
+        </body>
+    </table>
+{% endif %}
+
+<a href="/order" style="background-color: rgb(144, 227, 248); border-color: black;"  class="btn btn-primary">View Order</a>
+
+{% endblock %}
