@@ -1,0 +1,18 @@
+Name: Martin Derwin
+Student ID: 20439162
+
+Plagiarism Statement:
+
+I have read, understood and accepted the DCU Academic Integrity & Plagiarism Policy which can be found here: https://www.dcu.ie/system/files/2020-09/1_-_integrity_and_plagiarism_policy_ovpaa-v4.pdf 
+
+This work is my own. 
+Any references are cited and acknowledged. 
+This submission has not been previously submitted by me or any other person on this course or any other course.
+
+
+This applies to all of my submitted material for assignment 1:
+readme.md
+myshell.c
+myshell.h
+utility.c
+makefile
