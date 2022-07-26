@@ -1,0 +1,131 @@
+<%- include('header') -%>
+
+<title>Basket</title>
+<div class="aesthetic-windows-95-container">
+    <div class="aesthetic-light-purple-bg-color">
+      <h1 class="aesthetic-effect-text-glitch" data-glitch="B A S K E T">B A S K E T</h1>
+    </div>
+<div id="main"></div>
+<br>
+<h4 id="tprice"></h4>
+<img id='image-cont' alt='' src='image-cont'></img>
+<br>
+<div class="aesthetic-windows-95-button"><button><a style="font-weight: 500; color: blue; text-decoration: none;" href="/order">Order</a></button></div>
+
+</div>
+</div>
+
+<script>
+    window.onload = ()=>{
+        buildCartPage();
+    }
+
+    function displayCard(product_info){
+        console.log(product_info);
+        let token = localStorage.getItem("access");
+        let product_name = product_info['name'];
+        let quantity = product_info['quantity'];
+        let price = product_info['price'];
+        let productid = product_info['product_id'];
+        fetch("http://127.0.0.1:8000/api/products/"+productid)
+        .then(resp => resp.json())
+        .then(data => {
+            console.log(data)
+            let name = data['name'];
+            let price = data['price'];
+            let desc = data['description'];
+            let img = data['image'];
+            let htmlString = "<div><h1>"+name+"</h1><p>"+desc+"</p><p> Quantity: "+quantity+'</p><img src="'+img+'"width = "30%" </img></div>'
+            let maindiv = document.getElementById("main");
+            let innerHTML = maindiv.innerHTML
+            maindiv.innerHTML = innerHTML + htmlString;
+            maindiv.innerHTML = maindiv.innerHTML + '<div class="aesthetic-windows-95-button" style="color: #FF7276; margin-left: 30px;"><button id="remove-button" onclick="removeProduct('+productid+')">Remove item</button></div>';
+        })
+    }
+
+    function removeProduct(productid){
+        let token = localStorage.getItem("access");
+        if(token == null){
+            window.location = "/login"; // redirect to login page if access token does not exist
+        }
+        console.log(productid)
+        fetch("http://127.0.0.1:8000/apiremove/", {
+            'method': 'POST',
+            'headers':{
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer '+token
+            },
+            'body': JSON.stringify({"product_id": parseInt(productid)})
+        })
+        .then(resp=>resp.json())
+        .then(data =>{
+            window.location.reload()
+            console.log("item removed from basket")
+            let notifyUser = document.createElement("div")
+            notifyUser.innerHTML = "Removed item from basket";
+            document.getElementById("main").appendChild(notifyUser);
+        })
+    }
+
+    function buildCartPage(){
+        //
+        let sumPrice = 0;
+        isLoggedIn();
+        let token = localStorage.getItem("access");
+        if(token == null){
+            window.location = "/login"; // redirect to login page if access token does not exist
+        }
+        else{
+            fetch("http://127.0.0.1:8000/api/basket", {
+                'method': 'GET',
+                'headers':
+                {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(resp => resp.json())
+            .then(data =>{
+                if(data[0]['items'].length == 0)
+                {
+                    let maindiv = document.getElementById("main");
+                    maindiv.innerHTML = "Basket is empty!";
+
+                    document.getElementById('image-cont').src = "https://c.tenor.com/GRFNVdnrVrgAAAAC/win-error-error.gif";
+                }
+                else{
+                    let basket = data[0];
+                    console.log("basket: " + basket)
+                    let id = basket['id'];
+                    let items = basket['items'];
+                    items.forEach(element => {
+                        displayCard(element);
+                        sumPrice = sumPrice + element['price'];
+                    });
+                    let tprice = document.getElementById("tprice");
+                    let total_price = "Total Price: €" + sumPrice;
+                    tprice.innerHTML = tprice.innerHTML + total_price;
+                }
+            })
+
+        }
+
+    }
+
+
+
+    // // example
+    // let productId = // get the product id from the data
+
+    // function removeProduct(prodId){
+    // // function to make a fetch call to api/apiremove/
+    // }
+
+    // let newButton = document.createElement("button");
+    // newButton.innerHTML = "Click Me";
+    // newButton.onclick = function(){removeProduct(productId)}; // assign a function to our newly created button
+    // // add the button to the document
+</script>
+<%- include('footer') -%>

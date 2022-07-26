@@ -1,0 +1,81 @@
+<%- include('header') -%>
+
+    <div class="aesthetic-windows-95-container">
+        <h1 id='name-cont'></h1>
+        <p id='desc-cont'></p>
+        <h3 id='price-cont'></h3>
+        <img id = 'image-cont' src='image-cont' width="40%"></img>
+        <div style="margin-left: 30px; color: blue;" class="aesthetic-windows-95-button" id='add-button'></div>
+
+        <div class="aesthetic-pink-color" id="notify">
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    window.onload = ()=>{
+        isLoggedIn(); // when the page loads call isLoggedIn
+        let params = window.location.search;
+        let urlParams = new URLSearchParams(params);
+        let productID = urlParams.get("id");
+        // http://127.0.0.1:8000/api/products/id
+        if(productID != null && typeof(productID)!= 'undefined'){
+            fetch('http://127.0.0.1:8000/api/products/'+productID)
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                if('detail' in data){
+                    // display some generic product not found error
+                }
+                else{
+                    let name = data['name'];
+                    let desc = data['description'];
+                    let price = data['price'];
+                    let image= data['image'];
+                    // display the product data
+                    document.getElementById('name-cont').innerHTML = name;
+                    document.getElementById('desc-cont').innerHTML = desc;
+                    document.getElementById('price-cont').innerHTML = "€" + price;
+                    document.getElementById('image-cont').src = image;
+
+                    let addToCart = document.createElement("button"); // create a button
+                    addToCart.innerHTML = "Add to cart"; // set the text of the button
+                    document.getElementById('add-button').appendChild(addToCart);
+                    addToCart.onclick = ()=>{
+                        isLoggedIn(); // when the page loads call isLoggedIn
+                    // code for when the button is clicked
+                        fetch('http://127.0.0.1:8000/apiadd/', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer '+localStorage.getItem("access")
+                            },
+                            body: JSON.stringify({
+                                "product_id": parseInt(productID)
+                            })
+                        })
+                        .then(response=>response.json())
+                        .then(data=>{
+                                // display an add to cart success message
+                                console.log(data)
+                                if("product_id" in data){
+                                    let notifyUser = document.createElement("div");
+                                    notifyUser.innerHTML = "Added item to basket";
+                                    document.getElementById("notify").appendChild(notifyUser);
+                                }
+                                else{
+                                    console.log("User not logged in");
+                                    window.location.href = "/login"; // the "/" is the homepage for node http://127.0.0.1:3000
+                                }
+                            });
+                        }
+                    }
+            });
+        }
+    }
+</script>
+
+<%- include('footer') -%>

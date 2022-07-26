@@ -1,0 +1,21 @@
+.container {
+  padding: 10px;
+  margin: 20px;
+}
+
+body {
+  background-image: linear-gradient(to bottom, #C774E8, #8795E8);
+  font-family: 'MS Sans Serif';
+}
+
+img {
+  border-style: solid;
+  border-color: black;
+  margin-left: 30px;
+  padding: 0px;
+}
+
+a:hover {
+  font-size: 18px;
+}
+

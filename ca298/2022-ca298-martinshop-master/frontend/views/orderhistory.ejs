@@ -1,0 +1,71 @@
+<%- include('header') -%>
+
+<title>Order History</title>
+<div class="aesthetic-windows-95-container">
+    <div class="aesthetic-light-purple-bg-color">
+        <h1 class="aesthetic-effect-text-glitch" data-glitch="O R D E R - H I S T O R Y">O R D E R - H I S T O R Y</h1>
+    </div>
+<table id="main" class="table table-hover table-light table-bordered border-primary"></table>
+
+</div>
+
+
+<script>
+
+    window.onload = ()=>{
+            buildOrderHistory();
+    }
+
+    function displayCard(product_info){
+        let id = product_info['id'];
+        let basket_id = product_info['basket_id'];
+
+        let date = product_info['datetime_ordered'];
+        let day = date.substring(0, 10);                // get the day of the order
+        let time = date.substring(11, 19);              // get the time of the order
+
+        let total_price = product_info['total_price'];
+        let shipping_addr = product_info['shipping_addr'];
+
+        maindiv.innerHTML += "<tbody><tr><td>"+id+"</td><td>"+day+", "+time+"</td><td>"+shipping_addr+"</td><td>"+total_price+"</td></tr></tbody></table>";
+    }
+
+    let maindiv;
+
+    function buildOrderHistory(){
+        //
+        isLoggedIn();
+        let token = localStorage.getItem("access");
+        if(token == null){
+            window.location = "/login"; // redirect to login page if access token does not exist
+        }
+        else{
+            fetch("http://127.0.0.1:8000/api/orders/", {
+                'method': 'GET',
+                'headers':
+                {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(resp => resp.json())
+            .then(data =>{
+                let order = data;
+
+                let htmlString = '<table><thead><tr><th class="table-active">Order ID</th><th class="table-active">Order Date</th><th class="table-active">Shipping to</th><th class="table-active">Total price</th></tr></thead>';
+                maindiv = document.getElementById("main");
+
+                let innerHTML = maindiv.innerHTML
+
+                maindiv.innerHTML = innerHTML + htmlString;
+
+                order.forEach(element => {
+                    displayCard(element);
+                });
+            })
+        }
+
+    }
+</script>
+<%- include('footer') -%>

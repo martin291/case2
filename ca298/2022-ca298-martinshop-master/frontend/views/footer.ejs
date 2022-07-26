@@ -1,0 +1,26 @@
+	<!-- footer code -->
+</body>
+<script>
+    function isLoggedIn(){
+        let accessToken = localStorage.getItem("access");
+        if(accessToken != null){
+          // if there is an access token in localstorage
+          window.userLoggedIn = true;
+        }
+        if(window.userLoggedIn){
+              let loginLink = document.getElementById("auth-link");
+              loginLink.innerHTML = "Logout";
+              loginLink.href = "/";
+              loginLink.onclick = ()=>{
+                  localStorage.removeItem("access");
+                  localStorage.removeItem("refresh");
+                  window.userLoggedIn = false;
+              }
+        }
+      }
+
+    //   window.onload = function(){
+    //     isLoggedIn(); // when the page loads call isLoggedIn
+    //   }
+</script>
+</html>
