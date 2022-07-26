@@ -1,0 +1,26 @@
+
+ -------------------
+|                   |
+|  local repo       |
+|                   |
+|                   |        gitlab/turing.computing.dcu.ie
+ -------------------         -------------------
+         |                  |                   |
+         |                  |  GitLab           |
+	  ----------------> |                   |
+                            |                   |
+                             -------------------         gitlab-runner.computing.dcu.ie
+			              |                  -------------------
+                                      |                 |                   |
+                                       ---------------->|  GitLab Runner    |
+                                                        |                   |
+                                                        |                   |
+                                                         -------------------
+							     |
+							     | .gitlab-ci.yml
+							     |
+							     |  docker
+							     |  - build
+							     |  - test
+							     |  - ????
+							     |  - deploy
