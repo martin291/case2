@@ -1,0 +1,11 @@
+redis-cli ping
+redis-cli set counter 100
+redis-cli incr counter
+redis-cli get counter
+
+or, on the TermCast/docker server:
+
+redis-cli -h docker ping
+redis-cli -h docker set counter 100
+redis-cli -h docker incr counter
+redis-cli -h docker get counter
