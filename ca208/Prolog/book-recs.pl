@@ -1,0 +1,41 @@
+% Facts
+book(illiad, homer, study, 560).
+book(the-great-gatsby, fitzgerald, study, 208).
+book(coraline, gaiman, fiction, 210).
+book(the-hobbit, tokien, fiction, 310).
+book(a-game-of-thrones, martin, fiction, 694).
+book(tinker-tailor-soldier-spy, le-carre, drama, 355).
+book(1984, orwell, study, 328).
+book(dune, herbert, fiction, 412).
+book(hamlet, shakespeare, drama, 289).
+book(frankenstein, shelly, drama, 280).
+book(the-c-programming-language, ritchie, reference, 272).
+book(the-snowman, nesbo, crime, 438).
+book(the-hitchhikers-guide-to-the-galaxy, adams, comedy, 208).
+book(nt-bible, sams, reference, 480).
+book(monty-python, cleese, comedy, 300).
+
+% Rules
+
+buildLibrary(Lib) :- findall(book(Title, Author, Genre, Size), book(Title, Author, Genre, Size), Lib).
+
+% Literary reading (drama books).
+literary(H,[H|_]) :- H = book(_,_,drama,_).
+literary(B, [_|T]) :- literary(B, T).
+
+% Leisure(books that either comedy or fiction).
+leisure(H, [H|_]) :- H = book(_,_,comedy,_).
+leisure(H, [H|_]) :- H = book(_,_,fiction,_).
+leisure(B, [_|T]) :- leisure(B, T).
+
+% Revision (book that is either for study or a reference book with more
+% than 300 pages).
+revision(H,[H|_]) :- H = book(_,_,study, S), S > 300.
+revision(H,[H|_]) :- H = book(_,_,reference, S), S > 300.
+revision(B, [_|T]) :- revision(B, T).
+
+% Holidays (book should be less than 400 pages and not be a study or
+% reference book).
+holiday(H,[H|_]) :- H = book(_,_, G, S), G \= study, S < 400.
+holiday(H,[H|_]) :- H = book(_,_, G, S), G \= reference, S < 400.
+holiday(B, [_|T]) :- holiday(B, T).
