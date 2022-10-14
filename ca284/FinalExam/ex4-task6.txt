@@ -1,0 +1,13 @@
+Task: ex4-duplicate-remover.c
+
+For this task I used the defensive strategies 1-Never trust input, 3-Fail Early and Openly and 7-Simplify and Clarify.
+
+This question originally asked for the output to be in ascending order, this was later amended in the question description as it was not needed. Because of this requirement I attempted to use quick sort but upon submitting my program the hidden tests failed on einstein. I then submitted the program without sorting and it passed all hidden tests.
+
+My code is very simple and understandable. The arguments from command line are put into an int* array ‘numbers’, which is then sent to a function that checks for duplicates and outputs non-duplicates. This is achieved with two nested ‘for’ loops. The function counts the number of appearances of each element in the list, and if that count is more than 1 that element has duplicates. This approach also works when there are no duplicates in the array, and outputs nothing if there are only duplicates. The time complexity of the function used is O(n^2). An approach that would have a faster time complexity could be using hashmaps to store the non-duplicate values.
+
+Another approach I could have used would be to use realloc to store the non duplicate elements in a new result array, without memory leaking. The contents of this result array could then be output. However, although this approach would succeed in removing duplicates rather than outputting non-duplicates, it would also have a slower run-time than my current approach. When attempting this approach the realloc implementation became difficult to understand.
+
+I could also implement the 2nd defensive strategy (Prevent Errors). I noticed my code would fail if non-integers are input. For example: 9 9 9 c 9 would return 0. This could be fixed by checking if the arguments are all integers and exiting the program if they are not. Similarly the program also outputs an incorrect answer for floats. For example: 6 6 6 6.5 7 returns 7 when the desired output is 6.5 and 7. This is because the floats are converted to ints and are rounded down.
+
+Finally, defensive strategy 6 (Automate Everything) would be extremely helpful for testing. I could code a file that generates random inputs. This would save a lot of time and show errors or potential failures in my code that I had not considered.
