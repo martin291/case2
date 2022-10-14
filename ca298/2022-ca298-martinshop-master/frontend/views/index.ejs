@@ -1,0 +1,44 @@
+<%- include('header') -%>
+
+    <title>Marty's Frontend Stationery</title>
+
+  <div class="aesthetic-windows-95-container">
+      <div class="aesthetic-light-purple-bg-color">
+        <h1 class="aesthetic-effect-text-glitch" data-glitch="H O M E P A G E">H O M E P A G E</h1>
+      </div>
+      <p>Welcome to my humble shop!</p>
+      <p>
+        Pens? Paint? Calculators? You want it? It's yours my friend. As long as you
+        have enough Euros.
+      </p>
+      <p id="main-cont"></p>
+  </div>
+  </div>
+
+    <script>
+
+      fetch("http://127.0.0.1:8000/api/products")
+            .then(resp => resp.json())
+            .then(data => {
+                data.forEach(element => {
+                    // create a li element for each
+                    console.log(element);
+                    let tmpLi = document.createElement("li");
+                    let link = document.createElement("a");
+                    let image = element['image'];
+                    link.innerHTML = '<a style="font-weight: 400; color: black; text-decoration: none;">'+element['name']+'</a>' + '</p><img src="'+image+'"width="30%"</img>'; // <a>Bread</a>
+                    // /products?id=x
+                    let productStr = "/productindividual?id=" + element['id'];
+                    tmpLi.appendChild(link);
+                    console.log(productStr);
+                    link.href = productStr;
+                    document.getElementById("main-cont").appendChild(tmpLi);
+                });
+            })
+
+      window.onload = function(){
+        isLoggedIn(); // when the page loads call isLoggedIn
+      }
+
+  </script>
+<%- include('footer') -%>

@@ -1,0 +1,48 @@
+{%  extends "base.html" %}
+
+{% block title %}Order Complete{%  endblock %}
+
+{%  block content %}
+<h1>Thank you for your order!</h1>
+<pre>
+   |\_._/|        |,\__/|        |\__/,|        |\_._/|
+   | o o |        |  o o|        |o o  |        | 0 0 |
+   (  T  )        (   T )        ( T   )        (  T  )
+   .^`-^-'^.      .^`--^'^.      .^`^--'^.      .^`-^-'^.
+   `.  ;  .'      `.  ;  .'      `.  ;  .'      `.  ;  .'
+   | | | | |      | | | | |      | | | | |      | | | | |
+  ((_((|))_))    ((_((|))_))    ((_((|))_))    ((_((|))_))
+</pre>
+{% if empty %}
+    <p>Your shopping basket is empty</p>
+{% else %}
+    <table>
+        <body>
+            {% for item in sbi %}
+            <tr>
+                <td>{{item.product_id.name}} - {{item.product_id.description}}</td>
+                <td><img src="{{item.product_id.image.url}}" width="80%" /> </td>
+                <td>Quantity: {{item.quantity}}</td>
+                <td>Price: {{item.price}}</td>
+                <td><a href="/removeitem/{{item.id}}" style="background-color: #FAA0A0; color: black; border-color: black;" class="btn btn-primary">Remove</a></td>
+            {% endfor %}
+        </body>
+    </table>
+{% endif %}
+
+<p>Ship to: {{order.shipping_addr}}</p>
+<p>Total Price: {{order.total_price}}</p>
+<pre>
+.▀█▀.█▄█.█▀█.█▄.█.█▄▀　█▄█.█▀█.█─█
+─.█.─█▀█.█▀█.█.▀█.█▀▄　─█.─█▄█.█▄█
+   /^--^\     /^--^\     /^--^\
+   \____/     \____/     \____/
+   /      \   /      \   /      \
+  |        | |        | |        |
+   \__  __/   \__  __/   \__  __/
+|^|^|^|^|^|^|^|^|^|^|^|^\ \^|^|^|^/ /^|^|^|^|^\ \^|^|^|^|^|^|^|^|^|^|^|^|
+| | | | | | | | | | | | |\ \| | |/ /| | | | | | \ \ | | | | | | | | | | |
+########################/ /######\ \###########/ /#######################
+| | | | | | | | | | | | \/| | | | \/| | | | | |\/ | | | | | | | | | | | |
+|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|</pre>
+{% endblock %}
